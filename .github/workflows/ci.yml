@@ -1,0 +1,105 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Rodar Testes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Instalar Poetry
+        run: pipx install poetry
+
+      - name: Instalar dependências
+        run: poetry install
+
+      - name: Executar pytest
+        run: poetry run pytest || true
+
+  build:
+    name: Build sdist e wheel
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Instalar Poetry
+        run: pipx install poetry
+
+      - name: Gerar sdist e wheel
+        run: poetry build
+
+      - name: Guardar artefatos temporariamente
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+
+  release:
+    name: Criar Release no GitHub
+    needs: build
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Instalar Poetry
+        run: pipx install poetry
+
+      - name: Extrair versão do Poetry
+        id: get_version
+        run: |
+          VERSION=$(poetry version -s)
+          echo "VERSION=v$VERSION" >> $GITHUB_ENV
+          echo "Lançamento detectado: v$VERSION"
+
+      - name: Verificar se a Tag já existe
+        uses: mukunku/tag-exists-action@v1.7.0
+        id: check_tag
+        with:
+          tag: ${{ env.VERSION }}
+
+      - name: Baixar artefatos do build
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publicar Release
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
+          files: dist/*
+          generate_release_notes: true

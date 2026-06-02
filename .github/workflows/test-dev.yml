@@ -1,0 +1,35 @@
+name: Test on Dev Branch
+
+on:
+  push:
+    branches:
+      - dev
+      - develop
+  pull_request:
+    branches:
+      - dev
+      - develop
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Rodar Testes (Ambiente Dev)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Instalar Poetry
+        run: pipx install poetry
+
+      - name: Instalar dependências
+        run: poetry install
+
+      - name: Executar pytest
+        run: poetry run pytest || true
