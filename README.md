@@ -11,7 +11,6 @@ O projeto foi pensado para automatizar um fluxo comum de experimentação:
 4. interpretar os eventos relevantes encontrados na saída;
 5. consolidar os dados em planilha e CSV.
 
----
 
 ## Visão geral
 
@@ -26,8 +25,6 @@ O pacote expõe um comando de linha de comando chamado `simulate`, que:
 - gera:
     - um arquivo **CSV** com os eventos;
     - um arquivo **ODS** com relatório tabular e fórmulas estatísticas.
-
----
 
 ## Estrutura do projeto
 
@@ -97,8 +94,6 @@ Nele estão definidos:
 - requisito de versão do Python;
 - script de entrada `simulate`.
 
----
-
 ## Como o projeto funciona
 
 O fluxo principal é:
@@ -117,8 +112,6 @@ O fluxo principal é:
 7. os eventos extraídos são exportados para CSV;
 8. um relatório ODS é gerado a partir desses eventos.
 
----
-
 ## Requisitos
 
 ## Python
@@ -135,10 +128,6 @@ O projeto declara compatibilidade com:
 - disponível no `PATH` como `java`.
 
 Se o Java não for encontrado, a execução falhará.
-
----
-
----
 
 ## Instalação
 
@@ -174,8 +163,6 @@ Depois disso, o comando pode ficar disponível como:
 simulate --help
 ```
 
----
-
 ### Desenvolvimento
 
 #### Opção 1: Instalar com Poetry
@@ -192,8 +179,6 @@ Para executar o comando dentro do ambiente Poetry:
 poetry run simulate --help
 ```
 
----
-
 ### Opção 2: Instalar com o Pip
 
 Se quiser instalar em modo editável:
@@ -201,8 +186,6 @@ Se quiser instalar em modo editável:
 ```bash
 pip install -e .
 ```
-
----
 
 ## Configuração do ambiente
 
@@ -233,8 +216,6 @@ Exemplo em Windows PowerShell:
 $env:JAVA_HOME="C:\caminho\para\java"
 $env:Path="$env:JAVA_HOME\bin;$env:Path"
 ```
-
----
 
 ## Uso
 
@@ -300,8 +281,6 @@ simulate --help
   Coluna numérica para aplicar as fórmular no ODS.
   Obrigatória.
 
----
-
 ## Exemplo de uso
 
 ```bash
@@ -324,8 +303,6 @@ simulate \
       --csv-output "./output/dados.csv" \
       --logs "./logs"
 ```
-
----
 
 ## Saídas geradas
 
@@ -385,8 +362,6 @@ Além dos dados extraídos, o relatório inclui fórmulas para:
 - desvio padrão;
 - desvio padrão relativo.
 
----
-
 ## Formato esperado dos logs
 
 O parser procura padrões específicos na saída da simulação.
@@ -397,8 +372,6 @@ Ele identifica:
 2. eventos de pacote recebidos, usados para gerar os registros da planilha.
 
 Como a extração depende de expressões regulares, é necessário fornecer o arquivo contendo as expressões regulares e os grupos de captura
-
----
 
 ## Processamento dos dados
 
@@ -420,8 +393,6 @@ Os eventos são agrupados por:
 
 A partir disso, o relatório calcula estatísticas por grupo.
 
----
-
 ## Execução paralela
 
 As simulações podem ser executadas em paralelo por meio de threads.
@@ -438,8 +409,6 @@ Isso é controlado pelo parâmetro:
 - reduza a quantidade de threads se houver contenção de CPU, memória ou disco;
 - ajuste o `--timeout` para evitar execuções travadas por muito tempo.
 
----
-
 ## Tratamento de falhas
 
 Se uma simulação falhar:
@@ -450,8 +419,6 @@ Se uma simulação falhar:
 - os dados dessa execução não serão incluídos na extração de eventos.
 
 Também há tratamento para timeout: execuções que excedem o limite informado em `--timeout` retornam como falha.
-
----
 
 ## Desenvolvimento
 
@@ -480,8 +447,6 @@ O projeto está separado por responsabilidade:
 
 Essa separação facilita manutenção e evolução.
 
----
-
 ## Possíveis melhorias futuras
 
 Algumas evoluções naturais para o projeto:
@@ -492,8 +457,6 @@ Algumas evoluções naturais para o projeto:
 - tornar o parser configurável;
 - incluir barras de progresso e métricas de execução;
 - adicionar perfis de execução para diferentes cenários de simulação.
-
----
 
 ## Solução de problemas
 
@@ -510,8 +473,6 @@ Teste com:
 java -version
 ```
 
----
-
 ### Nenhum evento aparece no CSV/ODS
 
 Verifique se:
@@ -521,16 +482,12 @@ Verifique se:
 - as execuções não falharam;
 - o parser está compatível com o texto emitido pela aplicação Java.
 
----
-
 ### Classpath incorreto
 
 Se a classe principal não for encontrada, revise:
 
 - o valor de `--classpath`;
 - o nome informado em `--main-class`;
-
----
 
 ### Execuções muito lentas
 
@@ -541,12 +498,9 @@ Tente:
 - revisar opções de JVM com `--java-opt`;
 - limitar cenários muito pesados na simulação.
 
----
-
 ## Autor
 
 Projeto configurado com autoria de:
 
 - Arthur Valadares Campideli
 
-```
