@@ -142,7 +142,43 @@ Se o Java não for encontrado, a execução falhará.
 
 ## Instalação
 
-### Opção 1: instalar com Poetry
+### Uso
+
+#### Opção 1: Instalar com o pipx (Recomendado)
+
+O `pipx` é a ferramenta ideal para instalar aplicativos CLI feitos em Python, pois ele instala o pacote em um ambiente isolado, mas expõe o comando globalmente no seu terminal, evitando conflitos com outras dependências do sistema.
+
+```bash
+pipx install . # Se clonou o projeto
+pipx install git+https://github.com/ArthurValadaresUFLA/grubi-sheets.git # Se somente quer instalar
+pipx install git+https://github.com/ArthurValadaresUFLA/grubi-sheets.git@v0.1.0 # Se somente quer instalar uma versão específica
+```
+
+#### Opção 2: Instalar com pip
+
+Se quiser instalar o projeto como pacote local:
+
+Você pode instalar diretamente usando o gerenciador de pacotes padrão do Python.
+
+> ⚠️ **Nota:** Se estiver em distribuições Linux modernas (como Ubuntu 23.04+, Debian 12+, etc.), o `pip` global pode bloquear a instalação devido à regra de ambiente gerenciado externamente (PEP 668). Nesse caso, prefira o `pipx` acima ou use um ambiente virtual (`venv`).
+
+```bash
+pip install . # Se clonou o projeto
+pip install git+https://github.com/ArthurValadaresUFLA/grubi-sheets.git # Se somente quer instalar
+pip install git+https://github.com/ArthurValadaresUFLA/grubi-sheets.git@v0.1.0 # Se somente quer instalar uma versão específica
+```
+
+Depois disso, o comando pode ficar disponível como:
+
+```bash
+simulate --help
+```
+
+---
+
+### Desenvolvimento
+
+#### Opção 1: Instalar com Poetry
 
 Se você usa Poetry:
 
@@ -158,23 +194,7 @@ poetry run simulate --help
 
 ---
 
-### Opção 2: instalar com pip
-
-Se quiser instalar o projeto como pacote local:
-
-```bash
-pip install .
-```
-
-Depois disso, o comando pode ficar disponível como:
-
-```bash
-simulate --help
-```
-
----
-
-### Opção 3: desenvolvimento local
+### Opção 2: Instalar com o Pip
 
 Se quiser instalar em modo editável:
 
